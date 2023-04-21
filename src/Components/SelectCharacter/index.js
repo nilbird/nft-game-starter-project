@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from "react";
-import "./SelectCharacter.css";
 import { ethers } from "ethers";
 import { CONTRACT_ADDRESS, transformCharacterData } from "../../constants";
 import myEpicGame from "../../utils/MyEpicGame.json";
+import "./SelectCharacter.css";
 
 const SelectCharacter = ({ setCharacterNFT }) => {
   const [characters, setCharacters] = useState([]);

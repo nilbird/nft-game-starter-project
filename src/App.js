@@ -1,10 +1,11 @@
 import React, { useEffect, useState, useSyncExternalStore } from "react";
 import twitterLogo from "./assets/twitter-logo.svg";
 import "./App.css";
-import SelectCharacter from "./Components/SelectCharacter";
 import { ethers } from "ethers";
 import { CONTRACT_ADDRESS, transformCharacterData } from "./constants";
 import myEpicGame from "./utils/MyEpicGame.json";
+import SelectCharacter from "./Components/SelectCharacter";
+import Arena from "./Components/Arena";
 
 // Constants
 const TWITTER_HANDLE = "あなたのTwitterハンドル";
@@ -34,7 +35,7 @@ const App = () => {
         console.log("Make sure you have MataMask!");
         return;
       } else {
-        console.log("We have the etherreum object", ethereum);
+        console.log("We have the ethereum object", ethereum);
 
         const accounts = await ethereum.request({ method: "eth_accounts" });
         if (accounts.length !== 0) {
@@ -71,6 +72,13 @@ const App = () => {
       // ユーザーがWEBアプリにログインしており、かつNFTキャラクターを持っていない場合
     } else if (currentAccount && !characterNFT) {
       return <SelectCharacter setCharacterNFT={setCharacterNFT} />;
+
+      // シナリオ３
+      // ユーザーがWEBアプリにログインしており、かつNFTキャラクターを持っている場合
+    } else if (currentAccount && characterNFT) {
+      return (
+        <Arena characterNFT={characterNFT} setCharacterNFT={setCharacterNFT} />
+      );
     }
   };
 

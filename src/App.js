@@ -6,6 +6,7 @@ import { CONTRACT_ADDRESS, transformCharacterData } from "./constants";
 import myEpicGame from "./utils/MyEpicGame.json";
 import SelectCharacter from "./Components/SelectCharacter";
 import Arena from "./Components/Arena";
+import LoadingIndicator from "./Components/LoadingIndicator";
 
 // Constants
 const TWITTER_HANDLE = "あなたのTwitterハンドル";
@@ -14,6 +15,7 @@ const TWITTER_LINK = `https://twitter.com/${TWITTER_HANDLE}`;
 const App = () => {
   const [currentAccount, setCurrentAccount] = useState(null);
   const [characterNFT, setCharacterNFT] = useState(null);
+  const [isLoading, setIsLoading] = useState(false);
 
   // ユーザーがSepolia Networkに接続されているか確認する
   const checkNetwork = async () => {
@@ -33,11 +35,16 @@ const App = () => {
       const { ethereum } = window;
       if (!ethereum) {
         console.log("Make sure you have MataMask!");
+        setIsLoading(false);
+        console.log("set isLoading false");
         return;
       } else {
         console.log("We have the ethereum object", ethereum);
 
         const accounts = await ethereum.request({ method: "eth_accounts" });
+
+        console.log("got accounts");
+
         if (accounts.length !== 0) {
           const account = accounts[0];
           console.log("Found an authorized account", account);
@@ -50,9 +57,15 @@ const App = () => {
     } catch (error) {
       console.log(error);
     }
+
+    setIsLoading(false);
+    console.log("set isLoading false");
   };
 
   const renderContent = () => {
+    if (isLoading) {
+      return <LoadingIndicator />;
+    }
     // シナリオ１
     // ユーザーがWEBアプリにログインしていない場合。
     if (!currentAccount) {
@@ -93,6 +106,7 @@ const App = () => {
       // ユーザーがウォレットを持っているか確認する
       checkIfWalletIsConnected();
 
+      console.log("request account");
       const accounts = await ethereum.request({
         method: "eth_requestAccounts",
       });
@@ -109,6 +123,9 @@ const App = () => {
 
   // ページがロードされたときに useEffect()内の関数が呼び出される
   useEffect(() => {
+    setIsLoading(true);
+    console.log("set isLoading true");
+
     checkIfWalletIsConnected();
   }, []);
 
@@ -131,6 +148,10 @@ const App = () => {
       } else {
         console.log("No character NFT found");
       }
+
+      // ユーザーが保持しているNFTの確認が完了したら、ロード状態をfalseに設定
+      setIsLoading(false);
+      console.log("set isLoading false");
     };
 
     if (currentAccount) {

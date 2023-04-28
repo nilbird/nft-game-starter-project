@@ -1,17 +1,15 @@
 import React, { useEffect, useState } from "react";
 import { ethers } from "ethers";
-import {
-  CONTRACT_ADDRESS,
-  transform,
-  transformCharacterData,
-} from "../../constants";
+import { CONTRACT_ADDRESS, transformCharacterData } from "../../constants";
 import myEpicGame from "../../utils/MyEpicGame.json";
 import "./Arena.css";
+import LoadingIndicator from "../LoadingIndicator";
 
 const Arena = ({ characterNFT, setCharacterNFT }) => {
   const [gameContract, setGameContract] = useState(null);
   const [boss, setBoss] = useState(null);
   const [attackState, setAttackState] = useState("");
+  const [showToast, setShowToast] = useState(false);
 
   const runAttackAction = async () => {
     try {
@@ -29,6 +27,12 @@ const Arena = ({ characterNFT, setCharacterNFT }) => {
 
         // attackState の状態を hit にする
         setAttackState("hit");
+
+        // 攻撃ダメージの表示を true に設定し（表示）、５秒後に false に設定する（非表示）
+        setShowToast(true);
+        setTimeout(() => {
+          setShowToast(false);
+        }, 5000);
       }
     } catch (error) {
       console.error("Error attacking boss:", error);
@@ -87,6 +91,15 @@ const Arena = ({ characterNFT, setCharacterNFT }) => {
 
   return (
     <div className="arena-container">
+      {/* 攻撃ダメージの追加 */}
+      {boss && characterNFT && (
+        <div id="toast" className={showToast ? "show" : ""}>
+          <div id="desc">
+            {`💥 ${boss.name} was hit for ${characterNFT.attackDamage}!`}
+          </div>
+        </div>
+      )}
+
       {/* ボス */}
       {boss && (
         <div className="boss-container">
@@ -105,6 +118,13 @@ const Arena = ({ characterNFT, setCharacterNFT }) => {
               {`💥 Attack ${boss.name}`}
             </button>
           </div>
+          {/* Attackボタンの下にローディングマークを追加 */}
+          {attackState === "attacking" && (
+            <div className="loading-indicator">
+              <LoadingIndicator />
+              <p>Attaking ⚔️</p>
+            </div>
+          )}
         </div>
       )}
 

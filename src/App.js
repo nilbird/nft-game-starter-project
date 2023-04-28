@@ -168,15 +168,6 @@ const App = () => {
           <p className="sub-text">プレイヤーと協力してボスを倒そう✨</p>
           {renderContent()}
         </div>
-        <div className="footer-container">
-          <img alt="Twitter Logo" className="twitter-logo" src={twitterLogo} />
-          <a
-            className="footer-text"
-            href={TWITTER_LINK}
-            target="_blank"
-            rel="noreferrer"
-          >{`built with @${TWITTER_HANDLE}`}</a>
-        </div>
       </div>
     </div>
   );

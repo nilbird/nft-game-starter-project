@@ -5,7 +5,7 @@ import myEpicGame from "../../utils/MyEpicGame.json";
 import "./Arena.css";
 import LoadingIndicator from "../LoadingIndicator";
 
-const Arena = ({ characterNFT, setCharacterNFT }) => {
+const Arena = ({ characterNFT, setCharacterNFT, setRequestNFT }) => {
   const [gameContract, setGameContract] = useState(null);
   const [boss, setBoss] = useState(null);
   const [attackState, setAttackState] = useState("");
@@ -113,11 +113,13 @@ const Arena = ({ characterNFT, setCharacterNFT }) => {
               </div>
             </div>
           </div>
-          <div className="attack-container">
-            <button className="cta-button" onClick={runAttackAction}>
-              {`💥 Attack ${boss.name}`}
-            </button>
-          </div>
+          {characterNFT.hp !== 0 && (
+            <div className="attack-container">
+              <button className="cta-button" onClick={runAttackAction}>
+                {`💥 Attack ${boss.name}`}
+              </button>
+            </div>
+          )}
           {/* Attackボタンの下にローディングマークを追加 */}
           {attackState === "attacking" && (
             <div className="loading-indicator">
@@ -132,6 +134,16 @@ const Arena = ({ characterNFT, setCharacterNFT }) => {
       {characterNFT && (
         <div className="players-container">
           <div className="player-container">
+            {characterNFT.hp === 0 && (
+              <div className="attack-container">
+                <button
+                  className="cta-button"
+                  onClick={() => setRequestNFT(true)}
+                >
+                  💫 Change Charactor
+                </button>
+              </div>
+            )}
             <h2>Your Character</h2>
             <div className="player">
               <div className="image-content">

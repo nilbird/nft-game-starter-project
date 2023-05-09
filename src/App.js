@@ -16,6 +16,7 @@ const App = () => {
   const [currentAccount, setCurrentAccount] = useState(null);
   const [characterNFT, setCharacterNFT] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
+  const [requestNFT, setRequestNFT] = useState(false);
 
   // ユーザーがSepolia Networkに接続されているか確認する
   const checkNetwork = async () => {
@@ -82,15 +83,24 @@ const App = () => {
       );
 
       // シナリオ２
-      // ユーザーがWEBアプリにログインしており、かつNFTキャラクターを持っていない場合
-    } else if (currentAccount && !characterNFT) {
-      return <SelectCharacter setCharacterNFT={setCharacterNFT} />;
+      // ユーザーがWEBアプリにログインしており、かつNFTキャラクターを持っていないか次のNFTキャラ生成の要請がある場合
+    } else if (!characterNFT || requestNFT) {
+      return (
+        <SelectCharacter
+          setCharacterNFT={setCharacterNFT}
+          setRequestNFT={setRequestNFT}
+        />
+      );
 
       // シナリオ３
       // ユーザーがWEBアプリにログインしており、かつNFTキャラクターを持っている場合
-    } else if (currentAccount && characterNFT) {
+    } else {
       return (
-        <Arena characterNFT={characterNFT} setCharacterNFT={setCharacterNFT} />
+        <Arena
+          characterNFT={characterNFT}
+          setCharacterNFT={setCharacterNFT}
+          setRequestNFT={setRequestNFT}
+        />
       );
     }
   };

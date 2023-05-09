@@ -5,7 +5,7 @@ import myEpicGame from "../../utils/MyEpicGame.json";
 import "./SelectCharacter.css";
 import LoadingIndicator from "../LoadingIndicator";
 
-const SelectCharacter = ({ setCharacterNFT }) => {
+const SelectCharacter = ({ setCharacterNFT, setRequestNFT }) => {
   const [characters, setCharacters] = useState([]);
   const [gameContract, setGameContract] = useState(null);
   const [mintingCharacter, setMintingCharacter] = useState(false);
@@ -79,6 +79,7 @@ const SelectCharacter = ({ setCharacterNFT }) => {
         const characterNFT = await gameContract.checkIfUserHasNFT();
         console.log("CharacterNFT: ", characterNFT);
         setCharacterNFT(transformCharacterData(characterNFT));
+        setRequestNFT(false);
       }
     };
 

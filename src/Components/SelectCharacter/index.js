@@ -104,7 +104,7 @@ const SelectCharacter = ({ setCharacterNFT, setRequestNFT }) => {
           <p>{character.name}</p>
         </div>
         <img
-          src={`https://cloudflare-ipfs.com/ipfs/${character.imageURI}`}
+          src={`https://gateway.pinata.cloud/ipfs/${character.imageURI}`}
           alt={character.name}
         />
         <button
